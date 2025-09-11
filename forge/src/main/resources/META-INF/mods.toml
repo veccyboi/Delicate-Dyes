@@ -33,3 +33,10 @@ mandatory = true
 versionRange = "[4.1.0,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "dye_depot"
+mandatory = false
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"

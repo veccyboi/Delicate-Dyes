@@ -16,6 +16,7 @@ mixin {
 
 repositories {
     maven { url = "https://cursemaven.com" }
+    maven { url = "https://api.modrinth.com/maven"}
 }
 
 legacyForge {
@@ -54,6 +55,10 @@ legacyForge {
 dependencies {
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    //runtimeOnly "maven.modrinth:connector:1.0.0-beta.46+1.20.1"
+    //runtimeOnly "maven.modrinth:forgified-fabric-api:0.92.2+1.11.12+1.20.1"
+    //runtimeOnly "maven.modrinth:dye-depot:1.0.3-fabric"
+    //modImplementation "maven.modrinth"
 
     //RUNICLIB
     modImplementation "curse.maven:runiclib-880879:6329449"
