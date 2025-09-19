@@ -2,11 +2,14 @@ package net.azurune.delicate_dyes.common.util;
 
 import net.azurune.delicate_dyes.core.platform.Services;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class DDUtil {
     //This gets the amount of dyes currently in the game (starting at 15 because vanilla has 16)
     public static int getDyeCount() {
         boolean isforge;
         int dyeCount = 15;
+        //ForgePlatformHelper fph = new ForgePlatformHelper();
 
         try {
             Class.forName("net.minecraftforge.fml.loading.FMLEnvironment");
@@ -17,6 +20,12 @@ public class DDUtil {
 
         if (!isforge && Services.PLATFORM.isModLoaded("mint")) {
             dyeCount = dyeCount + 20;
+        }
+        try {
+            Class.forName("com.ninni.dye_depot.DyeDepot");
+            dyeCount = dyeCount + 16;
+        }
+        catch (ClassNotFoundException e) {
         }
         return dyeCount;
     }

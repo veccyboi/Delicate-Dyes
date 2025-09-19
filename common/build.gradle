@@ -47,3 +47,18 @@ artifacts {
 sourceSets.main.resources {
     srcDir project(":common").file('src/main/generated/').getAbsolutePath()
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    forge {
+        java {
+            srcDirs = ['forge/src/main/java']
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
