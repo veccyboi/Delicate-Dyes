@@ -24,12 +24,13 @@ public class DyeColorMixin {
     @Inject(method = "<clinit>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/item/DyeColor;$VALUES:[Lnet/minecraft/world/item/DyeColor;", shift = At.Shift.AFTER))
     private static void delicateDyes$addDyes(CallbackInfo ci) {
         int length = $VALUES.length;
+        //length += 16;
         int getDyeCount = DDUtil.getDyeCount();
 
         DyeColor[] addDye = new DyeColor[length + 8];
         System.arraycopy($VALUES, 0, addDye, 0, length);
 
-        addDye[length + 0] = delicateDyes$init("CORAL", getDyeCount + 1, getDyeCount + 1, "coral",
+        addDye[length + 0] = delicateDyes$init("CORAL", getDyeCount + 1, getDyeCount + 1, "delicatedyes_coral",
                 0xf97474, MapColor.RAW_IRON, 0xff6565, 0xff6565);
 
         addDye[length + 1] = delicateDyes$init("CANARY", getDyeCount + 2, getDyeCount + 2, "canary",
@@ -50,7 +51,7 @@ public class DyeColorMixin {
         addDye[length + 6] = delicateDyes$init("SANGRIA", getDyeCount + 7, getDyeCount + 7, "sangria",
                 0x82125a, MapColor.TERRACOTTA_PURPLE, 0x821d5e, 0x821d5e);
 
-        addDye[length + 7] = delicateDyes$init("ROSE", getDyeCount + 8, getDyeCount + 8, "rose",
+        addDye[length + 7] = delicateDyes$init("ROSE", getDyeCount + 8, getDyeCount + 8, "delicatedyes_rose",
                 0xc81b4f, MapColor.CRIMSON_HYPHAE, 0xbe2e59, 0xbe2e59);
 
         $VALUES = addDye;
