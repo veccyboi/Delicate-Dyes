@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Shearable;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -98,7 +99,10 @@ public abstract class SheepMixin extends Animal implements Shearable {
     public void setColor(DyeColor color) {
         byte b = entityData.get(DATA_WOOL_ID);
         DelicateDyes.LOGGER.info("DATA_WOOL_ID before dyeing: " + b);
+        DelicateDyes.LOGGER.info("b & 0x80 = " + (b & 0x80) + " (" + Integer.toBinaryString(b & 0x80) + ")");
+        DelicateDyes.LOGGER.info("color.getId() % 0x7F = " + (color.getId() % 0x7F) + " (" + Integer.toBinaryString(color.getId() % 0x7F) + ")");
         entityData.set(DATA_WOOL_ID, (byte) ((b & 0x80) | color.getId() % 0x7F));
+        DelicateDyes.LOGGER.info("((b & 0x80) | color.getId() % 0x7F)) = " + ((b & 0x80) | color.getId() % 0x7F) + " (" + Integer.toBinaryString((b & 0x80) | color.getId() % 0x7F) + ")");
         DelicateDyes.LOGGER.info("dyed sheep to " + color + " with id " + color.getId() + " and DATA_WOOL_ID " + b);
     }
 
@@ -118,10 +122,17 @@ public abstract class SheepMixin extends Animal implements Shearable {
     @Overwrite
     public void setSheared(boolean sheared) {
         byte b = entityData.get(DATA_WOOL_ID);
-        DelicateDyes.LOGGER.info("method DD$setSheared: DATA_WOOL_ID before shearing: " + b + " (in binary: " + Integer.toBinaryString(b) + ")");
+        DelicateDyes.LOGGER.info("method sheared: DATA_WOOL_ID before shearing: " + b + " (in binary: " + Integer.toBinaryString(b) + ")");
         entityData.set(DATA_WOOL_ID, (byte) ((b & 0x7F) | (sheared ? 0x80 : 0)));
-        DelicateDyes.LOGGER.info("method DD$setSheared: sheep with color " + this.getColor() + " with id " + this.getColor().getId() + " is now sheared and DATA_WOOL_ID " + b + " (in binary: " + Integer.toBinaryString(b) + ")");
-        DelicateDyes.LOGGER.info("method DD$setSheared: sheared sheep with color " + this.getColor() + " with id " + this.getColor().getId());
-        DelicateDyes.LOGGER.info("method DD$setSheared: wool from sheep with color " + this.getColor() + " dropped. ITEM_BY_DYE: " + ITEM_BY_DYE.get(this.getColor()));
+        DelicateDyes.LOGGER.info("method sheared: sheep with color " + this.getColor() + " with id " + this.getColor().getId() + " is now sheared and DATA_WOOL_ID " + b + " (in binary: " + Integer.toBinaryString(b) + ")");
+        DelicateDyes.LOGGER.info("method sheared: sheared sheep with color " + this.getColor() + " with id " + this.getColor().getId());
+        DelicateDyes.LOGGER.info("method sheared: wool from sheep with color " + this.getColor() + " dropped. ITEM_BY_DYE: " + ITEM_BY_DYE.get(this.getColor()));
+        int i = 1 + this.getRandom().nextInt(3);
+
+        for (int j = 0; j < i; ++j) {
+            ItemEntity itemEntity = this.spawnAtLocation(ITEM_BY_DYE.get(this.getColor()), 1);
+            if (itemEntity == null) continue;
+            itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.1F, (this.getRandom().nextFloat() * 0.05F), ((this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.1F)));
+        }
     }
 }
